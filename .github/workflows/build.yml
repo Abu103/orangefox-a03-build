@@ -21,7 +21,7 @@ jobs:
           remove-haskell: 'true'
           remove-codeql: 'true'
           remove-docker-images: 'true'
-          build-mount-path: '/home/runner'
+          build-mount-path: '/mnt/build'
 
       - name: Check disk space
         run: df -h
@@ -33,6 +33,7 @@ jobs:
           zlib1g-dev libc6-dev-i386 lib32z1-dev libgl1-mesa-dev \
           libxml2-utils xsltproc unzip fontconfig python-is-python3 cpio bc rsync \
           libncurses-dev lib32ncurses-dev
+          sudo chown -R $USER:$USER /mnt/build
 
       - name: Set up git identity
         run: |
@@ -48,20 +49,20 @@ jobs:
 
       - name: Sync OrangeFox sources
         run: |
-          mkdir -p ~/OrangeFox_sync
-          cd ~/OrangeFox_sync
+          mkdir -p /mnt/build/OrangeFox_sync
+          cd /mnt/build/OrangeFox_sync
           git clone https://gitlab.com/OrangeFox/sync.git
           cd sync
-          ./orangefox_sync.sh --branch 12.1 --path ~/fox_12.1
+          ./orangefox_sync.sh --branch 12.1 --path /mnt/build/fox_12.1
 
       - name: Copy device tree from repo
         run: |
-          mkdir -p ~/fox_12.1/device/samsung
-          cp -r $GITHUB_WORKSPACE/device/samsung/a03 ~/fox_12.1/device/samsung/a03
+          mkdir -p /mnt/build/fox_12.1/device/samsung
+          cp -r $GITHUB_WORKSPACE/device/samsung/a03 /mnt/build/fox_12.1/device/samsung/a03
 
       - name: Build OrangeFox
         run: |
-          cd ~/fox_12.1
+          cd /mnt/build/fox_12.1
           export ALLOW_MISSING_DEPENDENCIES=true
           export FOX_BUILD_DEVICE=a03
           export LC_ALL="C"
@@ -73,4 +74,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: OrangeFox-a03
-          path: ~/fox_12.1/out/target/product/a03/OrangeFox-unofficial-a03.img
+          path: /mnt/build/fox_12.1/out/target/product/a03/OrangeFox-unofficial-a03.img
