@@ -67,7 +67,7 @@ jobs:
           export FOX_BUILD_DEVICE=a03
           export LC_ALL="C"
           source build/envsetup.sh
-          lunch twrp_a03-eng
+          lunch omni_a03-eng
           mka adbd recoveryimage
 
       - name: Upload built image
