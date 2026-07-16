@@ -81,5 +81,6 @@ jobs:
         with:
           name: OrangeFox-a03
           path: |
-            /mnt/build/fox_12.1/out/target/product/a03/OrangeFox-R12.0-Unofficial-a03.img
-            /mnt/build/fox_12.1/out/target/product/a03/OrangeFox-R12.0-Unofficial-a03.zip
+            /mnt/build/fox_12.1/out/target/product/a03/OrangeFox-*-a03.img
+            /mnt/build/fox_12.1/out/target/product/a03/OrangeFox-*-a03.zip
+          if-no-files-found: warn
