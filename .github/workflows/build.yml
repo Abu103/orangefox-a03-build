@@ -11,6 +11,14 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git gnupg flex bison build-essential zip curl \
+          zlib1g-dev libc6-dev-i386 lib32z1-dev libgl1-mesa-dev \
+          libxml2-utils xsltproc unzip fontconfig python-is-python3 cpio bc rsync \
+          libncurses-dev lib32ncurses-dev
+
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
@@ -25,15 +33,6 @@ jobs:
 
       - name: Check disk space
         run: df -h
-
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y git gnupg flex bison build-essential zip curl \
-          zlib1g-dev libc6-dev-i386 lib32z1-dev libgl1-mesa-dev \
-          libxml2-utils xsltproc unzip fontconfig python-is-python3 cpio bc rsync \
-          libncurses-dev lib32ncurses-dev
-          sudo chown -R $USER:$USER /mnt/build
 
       - name: Set up git identity
         run: |
