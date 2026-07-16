@@ -67,7 +67,7 @@ jobs:
           export LC_ALL="C"
           set +e
           source build/envsetup.sh
-          lunch omni_a03-eng
+          lunch twrp_a03-eng
           LUNCH_STATUS=$?
           echo "Lunch exit status: $LUNCH_STATUS"
           if [ $LUNCH_STATUS -ne 0 ]; then
