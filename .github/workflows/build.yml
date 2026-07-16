@@ -1,0 +1,72 @@
+name: Build OrangeFox A03
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 2048
+          swap-size-mb: 4096
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git gnupg flex bison build-essential zip curl \
+          zlib1g-dev libc6-dev-i386 libncurses5-dev lib32ncurses5-dev \
+          x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev \
+          libxml2-utils xsltproc unzip fontconfig python2 python-is-python3 cpio bc rsync
+
+      - name: Set up git identity
+        run: |
+          git config --global user.name "actions-user"
+          git config --global user.email "actions@github.com"
+
+      - name: Install repo tool
+        run: |
+          mkdir -p ~/bin
+          curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+          chmod a+x ~/bin/repo
+          echo "$HOME/bin" >> $GITHUB_PATH
+
+      - name: Sync OrangeFox sources
+        run: |
+          mkdir -p ~/OrangeFox_sync
+          cd ~/OrangeFox_sync
+          git clone https://gitlab.com/OrangeFox/sync.git
+          cd sync
+          ./orangefox_sync.sh --branch 12.1 --path ~/fox_12.1
+
+      - name: Copy device tree from repo
+        run: |
+          mkdir -p ~/fox_12.1/device/samsung
+          cp -r $GITHUB_WORKSPACE/device/samsung/a03 ~/fox_12.1/device/samsung/a03
+
+      - name: Build OrangeFox
+        run: |
+          cd ~/fox_12.1
+          export ALLOW_MISSING_DEPENDENCIES=true
+          export FOX_BUILD_DEVICE=a03
+          export LC_ALL="C"
+          source build/envsetup.sh
+          lunch twrp_a03-eng
+          mka adbd recoveryimage
+
+      - name: Upload built image
+        uses: actions/upload-artifact@v4
+        with:
+          name: OrangeFox-a03
+          path: ~/fox_12.1/out/target/product/a03/OrangeFox-unofficial-a03.img
