@@ -21,6 +21,10 @@ jobs:
           remove-haskell: 'true'
           remove-codeql: 'true'
           remove-docker-images: 'true'
+          build-mount-path: '/home/runner'
+
+      - name: Check disk space
+        run: df -h
 
       - name: Install dependencies
         run: |
