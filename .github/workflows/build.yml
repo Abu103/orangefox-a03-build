@@ -80,4 +80,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: OrangeFox-a03
-          path: /mnt/build/fox_12.1/out/target/product/a03/OrangeFox-unofficial-a03.img
+          path: |
+            /mnt/build/fox_12.1/out/target/product/a03/OrangeFox-R12.0-Unofficial-a03.img
+            /mnt/build/fox_12.1/out/target/product/a03/OrangeFox-R12.0-Unofficial-a03.zip
