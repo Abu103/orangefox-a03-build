@@ -18,7 +18,7 @@ export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/by-name/vendor"
 export FOX_RECOVERY_BOOT_PARTITION="/dev/block/by-name/boot"
 
 # Samsung non-MIUI device
-export OF_VANILLA_BUILD="1"
+export FOX_VANILLA_BUILD="1"
 
 # Keep Samsung-specific features (for bootmode detection etc.)
 export OF_NO_SAMSUNG_SPECIAL="0"
@@ -38,7 +38,7 @@ export OF_DEVICE_WITHOUT_PERSIST="1"
 export OF_KEEP_FORCED_ENCRYPTION="1"
 
 # Security / Magisk
-export OF_ADVANCED_SECURITY="1"
+export FOX_ADVANCED_SECURITY="1"
 export OF_USE_MAGISKBOOT="1"
 export OF_USE_MAGISKBOOT_FOR_ALL_PATCHES="1"
 export OF_DONT_PATCH_ENCRYPTED_DEVICE="1"
